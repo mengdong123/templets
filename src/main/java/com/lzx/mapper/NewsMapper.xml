@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzx.mapper.NewsMapper">
+  <resultMap id="BaseResultMap" type="com.lzx.entity.News">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
+    <result column="hits" jdbcType="INTEGER" property="hits" />
+    <result column="top" jdbcType="BIT" property="top" />
+    <result column="indexpage" jdbcType="BIT" property="indexpage" />
+    <result column="pub_time" jdbcType="TIMESTAMP" property="pub_time" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from news
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lzx.entity.News">
+    insert into news (id, title, thumbnail, 
+      hits, top, indexpage, pub_time, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{thumbnail,jdbcType=VARCHAR}, 
+      #{hits,jdbcType=INTEGER}, #{top,jdbcType=BIT}, #{indexpage,jdbcType=BIT}, #{pub_time,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lzx.entity.News">
+    update news
+    set title = #{title,jdbcType=VARCHAR},
+      thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      hits = #{hits,jdbcType=INTEGER},
+      top = #{top,jdbcType=BIT},
+      indexpage = #{indexpage,jdbcType=BIT},
+      pub_time = #{pub_time,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, title, thumbnail, hits, top, indexpage, pub_time, content
+    from news
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, title, thumbnail, hits, top, indexpage, pub_time, content
+    from news order by pub_time desc
+  </select>
+  <select id="selectIndexPage" resultMap="BaseResultMap">
+  	select id, title, thumbnail, hits, top, indexpage, pub_time, content
+    from news WHERE indexpage=1 order by hits
+  </select>
+  <select id="selectTop" resultMap="BaseResultMap">
+  	select id, title, thumbnail, hits, top, indexpage, pub_time, content
+    from news WHERE top=1
+  </select>
+</mapper>

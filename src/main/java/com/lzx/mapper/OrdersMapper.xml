@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzx.mapper.OrdersMapper">
+  <resultMap id="BaseResultMap" type="com.lzx.entity.Orders">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="buyer_id" jdbcType="INTEGER" property="buyer_id" />
+    <result column="total_amount" jdbcType="INTEGER" property="total_amount" />
+    <result column="total_price" jdbcType="DECIMAL" property="total_price" />
+    <result column="payment_price" jdbcType="DECIMAL" property="payment_price" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="address_id" jdbcType="INTEGER" property="address_id" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from orders
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lzx.entity.Orders">
+    insert into orders (id, number, buyer_id, 
+      total_amount, total_price, payment_price, 
+      remark, address_id, 
+      status)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{buyer_id,jdbcType=INTEGER}, 
+      #{total_amount,jdbcType=INTEGER}, #{total_price,jdbcType=DECIMAL}, #{payment_price,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR}, #{address_id,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lzx.entity.Orders">
+    update orders
+    set number = #{number,jdbcType=VARCHAR},
+      buyer_id = #{buyer_id,jdbcType=INTEGER},
+      total_amount = #{total_amount,jdbcType=INTEGER},
+      total_price = #{total_price,jdbcType=DECIMAL},
+      payment_price = #{payment_price,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      address_id = #{address_id,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, number, buyer_id, total_amount, total_price, payment_price, remark, address_id, 
+    status
+    from orders
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, number, buyer_id, total_amount, total_price, payment_price, remark, address_id, 
+    status
+    from orders
+  </select>
+  
+  <resultMap id="OrderVoItemResultMap" type="com.lzx.entity.Orders">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="buyer_id" jdbcType="INTEGER" property="buyer_id" />
+    <result column="total_amount" jdbcType="INTEGER" property="total_amount" />
+    <result column="total_price" jdbcType="DECIMAL" property="total_price" />
+    <result column="payment_price" jdbcType="DECIMAL" property="payment_price" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="address_id" jdbcType="INTEGER" property="address_id" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+	<association property="address" 
+				 column="address_id" 
+				 select="com.lzx.mapper.AddressMapper.selectByPrimaryKey"></association>
+	<collection property="items" 
+			    column="id" 
+			    select="com.lzx.mapper.ItemMapper.selectByOrderId"></collection>
+  </resultMap>
+  <select id="selectByBuyerAndType" resultMap="OrderVoItemResultMap">
+    select id, number, buyer_id, total_amount, total_price, payment_price, remark, address_id, 
+     status
+    from orders
+    where buyer_id = #{buyer_id} AND status = #{status} order by create_time desc
+  </select>
+  <select id="selectByBuyer" parameterType="java.lang.Integer" resultMap="OrderVoItemResultMap">
+    select id, number, buyer_id, total_amount, total_price, payment_price, remark, address_id, 
+     status
+    from orders
+    where buyer_id = #{buyer_id} 
+  </select>
+  <select id="selectCountByBuyerAndType" resultType="java.lang.Integer">
+    select count(id)
+    from orders
+    where buyer_id = #{buyer_id} AND status = #{status}
+  </select>
+  <select id="selectIdByNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select id
+    from orders
+    where number = #{number}
+  </select>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzx.mapper.AddressMapper">
+	<resultMap id="BaseResultMap" type="com.lzx.entity.Address">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="contact" jdbcType="VARCHAR" property="contact" />
+		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		<result column="street" jdbcType="VARCHAR" property="street" />
+		<result column="zipcode" jdbcType="VARCHAR" property="zipcode" />
+		<result column="mbr_id" jdbcType="INTEGER" property="mbr_id" />
+		<result column="default_value" jdbcType="TINYINT"
+			property="default_value" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from address
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert">
+		insert into address ( contact, mobile,
+		street)
+		values (
+		#{contact,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+		#{street,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterType="com.lzx.entity.Address">
+		update address
+		set contact = #{contact,jdbcType=VARCHAR},
+		mobile = #{mobile,jdbcType=VARCHAR},
+		street =
+		#{street,jdbcType=VARCHAR},
+		zipcode = #{zipcode,jdbcType=VARCHAR},
+		mbr_id = #{mbr_id,jdbcType=INTEGER},
+		default_value =
+		#{default_value,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select id, contact,
+		mobile, street, zipcode, mbr_id, default_value
+		from address
+		where id =
+		#{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select id, contact, mobile,
+		street, zipcode, mbr_id, default_value
+		from address
+	</select>
+	<!-- 设置默认地址 -->
+	<update id="editValue">
+		UPDATE address SET default_value=1 WHERE id=#{id}
+	</update>
+
+	<!-- 清除默认地址 -->
+	<update id="exclueValue">
+		UPDATE address SET default_value=0 WHERE id!=#{id}
+	</update>
+	<select id="selectByUser" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select id, contact, mobile,  street, zipcode, mbr_id,
+		default_value
+		from address where mbr_id = #{mbr_id} order by default_value desc
+	</select>
+</mapper>

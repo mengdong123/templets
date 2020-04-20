@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzx.mapper.ShopcarMapper">
+  <resultMap id="BaseResultMap" type="com.lzx.entity.Shopcar">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="member_id" jdbcType="INTEGER" property="member_id" />
+    <result column="product_id" jdbcType="INTEGER" property="product_id" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from shopcar
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lzx.entity.Shopcar">
+    insert into shopcar (id, member_id, product_id, 
+      amount)
+    values (#{id,jdbcType=INTEGER}, #{member_id,jdbcType=INTEGER}, #{product_id,jdbcType=INTEGER}, 
+      #{amount,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lzx.entity.Shopcar">
+    update shopcar
+    set member_id = #{member_id,jdbcType=INTEGER},
+      product_id = #{product_id,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, member_id, product_id, amount
+    from shopcar
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, member_id, product_id, amount
+    from shopcar
+  </select>
+  <resultMap id="ShopCarVoProductResultMap" type="com.lzx.entity.Shopcar">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="member_id" jdbcType="INTEGER" property="member_id" />
+    <result column="product_id" jdbcType="INTEGER" property="product_id" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <association property="product" 
+         column="product_id" 
+         select="com.lzx.mapper.ProductMapper.selectByPrimaryKey">
+    </association>
+  </resultMap>
+  <select id="selectByMember" parameterType="java.lang.Integer" resultMap="ShopCarVoProductResultMap">
+    select id, member_id, product_id, amount
+    from shopcar where member_id = #{member_id}
+  </select>
+  <select id="selectOne" resultMap="BaseResultMap">
+  	select id, member_id, product_id, amount
+    from shopcar where member_id = #{member_id} and product_id = #{product_id}
+  </select>
+  <delete id="deleteByInfo">
+    delete from shopcar
+    where member_id = #{member_id} and product_id = #{product_id}
+  </delete>
+</mapper>

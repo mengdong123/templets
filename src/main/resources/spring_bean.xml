@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+	default-lazy-init="true">
+	<!-- ================扫描包(com.lzx) 除控制器================= -->
+	<context:component-scan base-package="com.lzx">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	<!-- ================加载类路径dbconfig.properties ================-->
+	<context:property-placeholder location="classpath:dbconfig.properties" />
+	<!-- ================Spring管理配置数据源 ================-->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<!-- url -->
+		<property name="url" value="${jdbc.url}"></property>
+		<!-- username -->
+		<property name="username" value="${jdbc.username}"></property>
+		<!-- password -->
+		<property name="password" value="${jdbc.password}"></property>
+		<!-- driver -->
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="1" />
+		<property name="minIdle" value="1" />
+		<property name="maxActive" value="20" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
+		<property name="filters" value="stat" />
+	</bean>
+	
+	<!-- ================mapper层管理配置==================== -->
+	
+	<!-- 1)自动注入SqlSessionFactory -->
+	 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	 <!-- 数据源 -->
+	<property name="dataSource" ref="dataSource" />
+	<!-- 多个实体定义别名  扫描 cn.lzx.entity, 别名：实体类类名的小写  note-->
+	<property name="typeAliasesPackage" value="com.lzx.entity" />
+	 <!-- configLocation：配置文件地址 
+	 <property name="configLocation" value="mybatis.xml"/>-->
+    </bean>
+    <!-- 2)sqlSession -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	  <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+	<!--3)自动扫描指定包下的所有Mapper 接口，并自动注册到Spring IoC容器中 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	    <property name="basePackage" value="com.lzx.mapper" />
+    </bean> 
+	<!-- ================Spring事务管理==================== -->
+	<!-- spring JDBC事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 定义事务通知(针对指定的方法配置事务的参数) -->
+	<tx:advice id="txadvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="insert*" propagation="REQUIRED" isolation="READ_COMMITTED" />
+			<tx:method name="update*" propagation="REQUIRED" isolation="READ_COMMITTED" />
+			<tx:method name="delete*" propagation="REQUIRED" isolation="READ_COMMITTED" />
+			<tx:method name="find*" propagation="REQUIRED" isolation="READ_COMMITTED"
+				read-only="true" />
+			<tx:method name="count*" propagation="REQUIRED" isolation="READ_COMMITTED"
+				read-only="true" />
+			<tx:method name="get*" propagation="REQUIRED" isolation="READ_COMMITTED"
+				read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- ====================配置事务切入点============================== -->
+
+	<!-- 声明事务配置 -->
+	<aop:config>
+		<!-- 通知器--> 
+		<aop:advisor advice-ref="txadvice"
+			pointcut="execution(* com.lzx.service.*.*(..))" />
+	</aop:config>
+	
+	
+</beans>
