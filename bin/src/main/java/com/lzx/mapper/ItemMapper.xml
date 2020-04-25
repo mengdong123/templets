@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzx.mapper.ItemMapper">
+  <resultMap id="BaseResultMap" type="com.lzx.entity.Item">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="INTEGER" property="order_id" />
+    <result column="product_id" jdbcType="INTEGER" property="product_id" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="total_price" jdbcType="DECIMAL" property="total_price" />
+    <result column="payment_price" jdbcType="DECIMAL" property="payment_price" />
+  </resultMap>
+  <delete id="deleteByOrder" parameterType="java.lang.Integer">
+    delete from item
+    where order_id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lzx.entity.Item">
+    insert into item (id, order_id, product_id, 
+      amount, total_price, payment_price
+      )
+    values (#{id,jdbcType=INTEGER}, #{order_id,jdbcType=INTEGER}, #{product_id,jdbcType=INTEGER}, 
+      #{amount,jdbcType=INTEGER}, #{total_price,jdbcType=DECIMAL}, #{payment_price,jdbcType=DECIMAL}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lzx.entity.Item">
+    update item
+    set order_id = #{order_id,jdbcType=INTEGER},
+      product_id = #{product_id,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=INTEGER},
+      total_price = #{total_price,jdbcType=DECIMAL},
+      payment_price = #{payment_price,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, order_id, product_id, amount, total_price, payment_price
+    from item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, order_id, product_id, amount, total_price, payment_price
+    from item
+  </select>
+  
+  <resultMap id="itemVoProductResultMap" type="com.lzx.entity.Item">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="INTEGER" property="order_id" />
+    <result column="product_id" jdbcType="INTEGER" property="product_id" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="total_price" jdbcType="DECIMAL" property="total_price" />
+    <result column="payment_price" jdbcType="DECIMAL" property="payment_price" />
+    <association 
+	    property="product" 
+	    column="product_id" 
+	    select="com.lzx.mapper.ProductMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <select id="selectByOrderId" parameterType="java.lang.Integer" resultMap="itemVoProductResultMap">
+    select id, order_id, product_id, amount, total_price, payment_price
+    from item
+    WHERE order_id = #{order_id}
+  </select>
+</mapper>

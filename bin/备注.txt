@@ -1,0 +1,17 @@
+开发步骤：
+注意:   实体类:  com.lzx.entity
+                   表示层:   Springmvc   mvc 控制器:  com.lzx.web.cotroller
+                   业务层:   Spring      com.lzx.service(接口及实现类)
+                   持久层:   mybatis     com.lzx.mapper(接口,mapper.xml)        
+
+1)目录结构:
+   java代码:(controller)  /mng/模块名/(find*  get*   insert*   update*  delete*)
+          前端： 未登录界面直接查看:  根目录
+                        登录后才可查看:/mng/模块名/crud界面
+              
+2)过滤器:   /mng
+
+3)界面转换 
+ 
+
+                      

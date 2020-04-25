@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+<display-name>ssm_templets</display-name>
+   <!-- 欢迎页 -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+   <!-- =============Spring配置=================== -->
+   <!--======= 程序启动时，启动监听器 ,加载 spring配置文件====-->
+  <context-param>
+   <param-name>contextConfigLocation</param-name>
+   <param-value>classpath:spring_bean.xml</param-value>
+   </context-param>
+   <!-- =======监听器================================-->
+   <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+   </listener>
+   <!-- =======Spring为Web提供过字符集编码UTF-8 ============-->
+   <filter>
+   <filter-name>characterEncoding</filter-name>
+   <filter-class>org.springframework.web.filter.CharacterEncodingFilter
+   </filter-class>
+   <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+   </init-param>
+   </filter>
+   <filter-mapping>
+   <filter-name>characterEncoding</filter-name>
+   <url-pattern>/*</url-pattern>
+   </filter-mapping>
+   
+  <!--=====Spring刷新Introspector防止内存泄露===============-->
+  <listener>
+  <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+  
+  <!-- =============SpringMvc配置=================== -->
+  
+  <!-- 配置前端控制器 DispatherServlet, 1、默认WEB-INFO:加载Springmvc配置文件 (dispatherServer-servlet.xml) 
+		2、resources目录加载Springmvc配置文件 -->
+	<servlet>
+		<servlet-name>dispatherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param> 
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring_mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatherServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+</web-app>

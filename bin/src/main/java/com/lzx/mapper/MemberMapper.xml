@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzx.mapper.MemberMapper">
+  <resultMap id="BaseResultMap" type="com.lzx.entity.Member">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="real_name" jdbcType="VARCHAR" property="real_name" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nick_name" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="gender" jdbcType="BIT" property="gender" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="register_time" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from member
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lzx.entity.Member">
+    insert into member (id, mobile, pwd, 
+      real_name, nick_name, email, 
+      gender, register_time)
+    values (#{id,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+      #{real_name,jdbcType=VARCHAR}, #{nick_name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=BIT}, #{register_time,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update member
+    set mobile = #{mobile},
+      real_name = #{real_name},
+      nick_name = #{nick_name},
+      email = #{email},
+      gender = #{gender}
+     where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, mobile, pwd, real_name, nick_name, email, gender, register_time
+    from member
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, mobile, pwd, real_name, nick_name, email, gender, register_time
+    from member
+  </select>
+  <!-- 查找总条数 -->
+  <select id="findCount">
+      SELECT COUNT(*) FROM member;
+  </select>
+  <!-- 分页查找 -->
+  <select id="findByPaper" resultMap="BaseResultMap">
+      SELECT id,real_name,pwd,mobile,nickname,email,gender,register_time FROM member 
+      LIMIT #{num},#{size};
+  </select>
+  <select id="login" resultMap="BaseResultMap">
+      SELECT * FROM member WHERE mobile=#{mobile} and pwd = #{pwd};
+  </select>
+  <!-- 修改密码 -->
+  <update id="updatePwd">
+      UPDATE member SET pwd = #{pwd} WHERE id = #{id};
+  </update>
+</mapper>
