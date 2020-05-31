@@ -6,7 +6,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/webapp"/>
-        <property name="context-root" value="ssm_templets"/>
         <property name="java-output-path" value="/ssm_templets/target/classes"/>
+        <property name="context-root" value="templets"/>
     </wb-module>
 </project-modules>

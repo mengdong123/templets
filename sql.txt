@@ -1,0 +1,367 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : qwer
+ Source Server Type    : MySQL
+ Source Server Version : 50562
+ Source Host           : localhost:3306
+ Source Schema         : project5
+
+ Target Server Type    : MySQL
+ Target Server Version : 50562
+ File Encoding         : 65001
+
+ Date: 31/05/2020 11:38:12
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for address
+-- ----------------------------
+DROP TABLE IF EXISTS `address`;
+CREATE TABLE `address`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '地址编号',
+  `contact` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '收货人',
+  `mobile` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '联系电话',
+  `street` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详细地址',
+  `zipcode` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮编',
+  `mbr_id` int(1) NULL DEFAULT 0 COMMENT '所属会员',
+  `default_value` tinyint(2) NULL DEFAULT 0 COMMENT '是否为所属会员的默认收货地址',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of address
+-- ----------------------------
+INSERT INTO `address` VALUES (14, 'yang', '111', '12345678', NULL, 1, 0);
+INSERT INTO `address` VALUES (15, 'yang', '22222222222', '12345678', NULL, 0, 0);
+INSERT INTO `address` VALUES (16, 'yang', '22222222222', '1234567', NULL, 0, 1);
+INSERT INTO `address` VALUES (18, 'yang', '11111111111', '1234567', NULL, 0, 0);
+INSERT INTO `address` VALUES (19, 'yang', '11111111111', '1234567', NULL, 0, 0);
+INSERT INTO `address` VALUES (20, 'yang', '123', '1234567', NULL, 0, 0);
+INSERT INTO `address` VALUES (22, 'yang', '12345', 'tianjinshi', NULL, 0, 0);
+INSERT INTO `address` VALUES (24, 'yang', '1234', '12345', NULL, 0, 0);
+INSERT INTO `address` VALUES (26, 'yang', '123', '666', NULL, 0, 0);
+INSERT INTO `address` VALUES (28, 'yang', '123', '66666', NULL, 0, 0);
+INSERT INTO `address` VALUES (30, 'yang', '11111111111', '1234567', NULL, 0, 0);
+INSERT INTO `address` VALUES (31, '刘大', '17688888888', '河东区', NULL, 0, 0);
+INSERT INTO `address` VALUES (32, 'yang', '11111111111', '河东区', NULL, 0, 0);
+INSERT INTO `address` VALUES (33, '王二', '18900000000', '昌平区东方', NULL, 0, 0);
+
+-- ----------------------------
+-- Table structure for category
+-- ----------------------------
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE `category`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分类编号',
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类目名称',
+  `alias` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类目别名',
+  `p_id` int(32) NULL DEFAULT NULL COMMENT '父类目编号',
+  `order_weight` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '排序权重',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of category
+-- ----------------------------
+INSERT INTO `category` VALUES (1, '手机', '手机', NULL, '1');
+INSERT INTO `category` VALUES (2, '华为', '手机', 1, '2');
+INSERT INTO `category` VALUES (3, '苹果', '电脑，平板', 1, '3');
+INSERT INTO `category` VALUES (4, '小米', '电脑，平板', 1, '4');
+INSERT INTO `category` VALUES (5, '电脑，平板', '电脑，平板', NULL, '5');
+INSERT INTO `category` VALUES (6, '平板', '电脑，平板', 5, '6');
+INSERT INTO `category` VALUES (7, '笔记本', '家用电器', 5, '7');
+INSERT INTO `category` VALUES (8, '台式机', '家用电器', 5, '8');
+INSERT INTO `category` VALUES (9, '家用电器', '家用电器', NULL, '9');
+INSERT INTO `category` VALUES (10, '空调', '家用电器', 9, '10');
+INSERT INTO `category` VALUES (11, '洗衣机', '汽车', 9, '11');
+INSERT INTO `category` VALUES (12, '电视', '汽车', 9, '12');
+INSERT INTO `category` VALUES (13, '汽车', '汽车', NULL, '13');
+INSERT INTO `category` VALUES (14, '靠垫', '服装鞋帽', 13, '14');
+INSERT INTO `category` VALUES (15, '车载电器', '服装鞋帽', 13, '15');
+INSERT INTO `category` VALUES (16, '服装鞋帽', '服装鞋帽', NULL, '16');
+INSERT INTO `category` VALUES (17, '童装', '图书，音像', 16, '17');
+INSERT INTO `category` VALUES (18, '青少年', '图书，音像', 16, '18');
+INSERT INTO `category` VALUES (19, '成人西服', '图书，音像', 16, '19');
+INSERT INTO `category` VALUES (20, '衣裙', '母婴，玩具', 16, '20');
+INSERT INTO `category` VALUES (21, '图书，音像', '母婴，玩具', NULL, '21');
+INSERT INTO `category` VALUES (22, '高考资料', '母婴，玩具', 21, '22');
+INSERT INTO `category` VALUES (23, '计算机', '1', 21, NULL);
+INSERT INTO `category` VALUES (24, '古文', '1', 21, NULL);
+INSERT INTO `category` VALUES (25, '母婴，玩具', '1', NULL, NULL);
+INSERT INTO `category` VALUES (26, '奶粉', '1', 25, NULL);
+INSERT INTO `category` VALUES (27, '辅食', '1', 25, NULL);
+
+-- ----------------------------
+-- Table structure for item
+-- ----------------------------
+DROP TABLE IF EXISTS `item`;
+CREATE TABLE `item`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `order_id` int(11) NOT NULL COMMENT '所属订单编号',
+  `product_id` int(11) NOT NULL COMMENT '商品编号',
+  `amount` int(11) NULL DEFAULT NULL COMMENT '单品数量',
+  `total_price` decimal(10, 0) NULL DEFAULT NULL COMMENT '单品总价',
+  `payment_price` decimal(10, 0) NULL DEFAULT NULL COMMENT '单品实付的总价',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of item
+-- ----------------------------
+INSERT INTO `item` VALUES (1, 1, 2, 2, 20, 20);
+INSERT INTO `item` VALUES (4, 5, 15, 27, 0, 0);
+INSERT INTO `item` VALUES (5, 5, 16, 9, 0, 450);
+INSERT INTO `item` VALUES (6, 6, 2, 3, 0, 60);
+INSERT INTO `item` VALUES (7, 6, 15, 27, 0, 0);
+INSERT INTO `item` VALUES (8, 6, 16, 9, 0, 450);
+INSERT INTO `item` VALUES (9, 7, 2, 3, 0, 60);
+INSERT INTO `item` VALUES (10, 7, 15, 31, 0, 0);
+INSERT INTO `item` VALUES (11, 7, 16, 9, 0, 450);
+INSERT INTO `item` VALUES (12, 8, 15, 36, 0, 0);
+INSERT INTO `item` VALUES (13, 8, 16, 16, 0, 800);
+INSERT INTO `item` VALUES (14, 9, 8, 1, 4999, 0);
+INSERT INTO `item` VALUES (15, 9, 15, 36, 0, 0);
+INSERT INTO `item` VALUES (16, 9, 16, 16, 0, 800);
+
+-- ----------------------------
+-- Table structure for manager
+-- ----------------------------
+DROP TABLE IF EXISTS `manager`;
+CREATE TABLE `manager`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '管理员编号',
+  `lname` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登录名',
+  `pwd` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
+  `real_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '真实姓名',
+  `salt` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码盐值',
+  `email` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `joined_date` datetime NULL DEFAULT NULL COMMENT '员工入职日期',
+  `status` int(1) NULL DEFAULT NULL COMMENT 'true：正常\r\nfalse：离职',
+  `avatar` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
+  `tel` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '联系方式',
+  `memo` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '备注',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '注册时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'alter table manager\r\nadd constraint UQ_IDNumber unique(lname)' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of manager
+-- ----------------------------
+INSERT INTO `manager` VALUES (1, 'admin', 'admin', '8', '1', '1', '2019-12-02 19:34:08', 1, '37718815.jpeg', '', '', '2019-12-01 13:06:26');
+INSERT INTO `manager` VALUES (2, 'admin2', 'admin2', '', '', '', '2019-12-02 19:34:14', 1, '001243-1573661563c583.jpg', '8', '', '2019-12-01 19:13:46');
+INSERT INTO `manager` VALUES (15, '2', '2', '2', '2', 'da', '2019-12-02 19:34:08', 1, '下载.jpg', 'asd', '', '2019-12-01 19:13:46');
+INSERT INTO `manager` VALUES (16, '999', '999', 'yfb', '1', '1', '2019-12-03 16:11:52', 8, 'timg (1).jpg', '', 'da', '2019-12-02 19:18:08');
+INSERT INTO `manager` VALUES (17, '666', '666', '666', '1', '666@qq.com', '2019-12-02 14:17:52', 1, '智慧联想浏览器截图20191021194924.png', '7', NULL, '2019-12-30 14:18:01');
+
+-- ----------------------------
+-- Table structure for member
+-- ----------------------------
+DROP TABLE IF EXISTS `member`;
+CREATE TABLE `member`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '管理员编号',
+  `mobile` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号，唯一',
+  `pwd` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
+  `real_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '真实姓名',
+  `nick_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '昵称',
+  `email` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `gender` tinyint(1) NULL DEFAULT 0 COMMENT '性别：true：男；false：女',
+  `register_time` datetime NULL DEFAULT NULL COMMENT '注册时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of member
+-- ----------------------------
+INSERT INTO `member` VALUES (1, '11111111111', '111111', '000', 'admin', 'yangfanbin@qq.com', 0, '2020-01-08 11:37:01');
+INSERT INTO `member` VALUES (2, '22222222222', '333', 'qwe', 'ewq', 'asd', 1, NULL);
+INSERT INTO `member` VALUES (5, '2222222222222222', '123', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (6, '2222222222221', '123', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (7, '22222222222222', '123', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (8, '123211111111111111111', '123', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (10, '123', '213', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (11, '123', '213', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (12, '123', '213', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (13, '123', '213', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (19, '111', '666666', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (20, '111', '666666', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (21, '2222222222222', '11111111111', '111111', NULL, NULL, NULL, NULL);
+INSERT INTO `member` VALUES (22, '12345678901', '5555', '11', 'admin', 'sfdgs', 0, NULL);
+INSERT INTO `member` VALUES (23, '12345678901', '5555', '8', 'admin', '12345', 0, NULL);
+INSERT INTO `member` VALUES (24, '12345678901', '111111', '1234', 'admin', '123', 1, NULL);
+INSERT INTO `member` VALUES (25, '22222222222', '111111', '123', '', '', 1, NULL);
+INSERT INTO `member` VALUES (26, '111111111112222', '123456', '2', NULL, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for menu
+-- ----------------------------
+DROP TABLE IF EXISTS `menu`;
+CREATE TABLE `menu`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '菜单编号',
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单名称',
+  `icon` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单图标名称',
+  `url` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单url',
+  `weight` int(11) NULL DEFAULT NULL COMMENT '权重',
+  `P_id` int(11) NULL DEFAULT NULL COMMENT '父级菜单 id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for news
+-- ----------------------------
+DROP TABLE IF EXISTS `news`;
+CREATE TABLE `news`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '新闻编号',
+  `title` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '新闻标题',
+  `thumbnail` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '主配图片',
+  `content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '新闻内容',
+  `hits` int(11) NULL DEFAULT NULL COMMENT '点击量',
+  `top` tinyint(1) NULL DEFAULT NULL COMMENT '是否轮播图，默认值false',
+  `pub_time` datetime NULL DEFAULT NULL COMMENT '发布时间',
+  `indexpage` tinyint(1) NULL DEFAULT NULL COMMENT '首页是否显示',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of news
+-- ----------------------------
+INSERT INTO `news` VALUES (1, '降了！iPhone 11官方承认，还买什么小米10！', 'sliding-1.jpg', '最近比较火的手机莫过于小米10系列，因为这是2020年首款骁龙865旗舰系列，而且在小米10系列身上我们又见识到了很多以前没有的高配置，所以这对大家来说都太耳目一新了，所以小米10系列的热度会在这段时间内一直持续的。\r\n\r\n但是这并不意味着小米10系列就是现阶段最值得入手的手机，因为毕竟它是5G手机系列，而现在很多人所在的城市还没有普及5G网，并且在一两年左右也不会完全做到普及，因此5G高端机并不值得所有的城市用户都购买。\r\n\r\n相反，现在有很多值得大家选择的4G手机，就比如说iPhone 11！因为现在苹果官方已经宣布了iPhone 11降价了，这是自上一年发布以来，iPhone 11的首次官方调价，得到了官方承认，大家可以放心入手。\r\n\r\n要论处理器性能以及手机流畅度的话，iPhone 11还是比小米10系列乃至很多国产高端机都强的。毕竟大家买苹果手机的最主要因素就是因为它的使用体验好过很多国产手机，在价格下降之后，iPhone 11当然是很值得入手，而且下调后的iPhone 11吸引力会更大很多。\r\n\r\n这次iPhone 11之所以在价格上放水，主要的原因是逢着节日，另外的原因的话主要也还是应对国产手机的冲击，毕竟像5G手机中，荣耀V30系列发布没多久都降了，而且小米10系列新机又追得紧，所以还是有必要放掉一些价格来增强吸引力的。\r\n\r\n那么你会选择刚刚发布的小米10系列，还是会选择已经降下价格的iPhone 11呢？', 13140, 1, '2019-12-03 15:02:52', 1);
+INSERT INTO `news` VALUES (2, '骁龙865对比麒麟990 5G！差距果然太大！', 'sliding-2.jpg', '最近高通骁龙865机型与雨后春笋相继面世，从小米10系列开始，到现在的iQOO 3以及realme X50 Pro和即将到来的一加8系列以及OPPO Find X2和红米K30 Pro，他们都有一个共同的宣传点，那就是极力鼓吹骁龙865和骁龙X55基带的好处。\r\n\r\n但是大家别忘了，这个骁龙865和骁龙X55是美国高通公司的硬件，几乎所有的国产高端手机在发布会上都会极力吹捧这个美国硬件，那么国产发布会都是在给美国硬件做广告吗？\r\n\r\n是的，可以说美国高通骁龙处理器在国产手机中真的是太受欢迎了。每一年高通发布新处理器的时候，国产手机品牌厂商们总是争着想取得首发权，骁龙845是这样、骁龙855是这样、骁龙865也是这样！当初联想和小米对骁龙的首发权之争可以说是惊为天人，用“头破血流”来形容也是不为过的。\r\n\r\n不过幸好，在所有国产手机们为高通骁龙处理器马首是瞻的同时，国产中还有一个手机品牌可以与高通骁龙处理器对着干，那就是华为！一个饱受争议的国产手机代表，在国内受到争议，现在在国外更加受到了争议。\r\n\r\n华为在国外受到的争议在于，美国无真凭实据的打压，他们说华为利用强大的通讯技术窃取美国情报，为此他们扣留了华为重要管理人，也就是华为创始人任正非的长公主孟晚舟，没想到啊，一个诺大的美国，会害怕一个中国的通讯企业了！\r\n\r\n而华为在国内的争议主要来自友商，他们说华为打着爱国情怀，博取国人的同情心，搞爱国营销，华为赢得并不光彩！\r\n\r\n那么，你认为呢？反正我不这样认为！\r\n\r\n一个能在竞争最激烈的科技世界中把通讯技术、5G等做到世界第一的中国企业；\r\n\r\n一个能在美国高通差不多完全垄断国内手机芯片的情况下自给自足自研麒麟处理器的中国企业；\r\n\r\n一个凭借着自己的实力对抗着世界超级大国的中国企业；\r\n\r\n一个为了摆脱美国谷歌操控而默默用了7年时间研发鸿蒙系统的中国企业；\r\n\r\n一个凭借着多年努力超越苹果成为世界第二手机厂商的中国企业；\r\n\r\n一个把中国自强不息的精神和胆识刻到骨子里的中国企业！\r\n\r\n这样的企业，我不忍心说他是靠着消费国人的爱国情怀发展起来的！\r\n\r\n相反，我更认为，国人支持华为，更多的是处于对这个企业的骄傲感和自豪感，是处于对华为油然而生的喜欢和敬佩！\r\n\r\n人家本来就那么优秀，我们为什么不能像美国人民那样支持苹果？你不支持就算了，至少别人支持的时候，你不要说别人是出于爱国情怀和同情心！\r\n\r\n毕竟一个优秀的企业就该和国家的发展同步在一起，中国支持华为，并且会用尽一切最大的努力保障华为在国外的安全发展，因为这是一个国家本来就该做的，这也是中国大国担当的体现，更是中国综合国力上升的体现。\r\n\r\n当然了，换做是小米、OV等任何一个国产品牌在国外受到不公正待遇的时候，国家同样会一视同仁的出手相助！\r\n\r\n所以，爱华为无关爱国情怀，关键的是华为本就优秀，爱看华为的发布会，是因为华为的自研技术太多，看着这样的发布会才精彩，而不是像很多友商那样，发一次发布会都是在给美国硬件做广告宣传！', 123123, 1, '2020-01-28 11:07:43', 1);
+INSERT INTO `news` VALUES (3, '还在为买不到口罩发愁？选它效果更胜一筹！', 'sliding-3.jpg', '在疫情期间，口罩和消毒液突然成了香馍馍，尤其面对近期的复工潮，更是一罩难求，偶见朋友圈有口罩售卖，但是高昂的的价格却让人望而止步。很多人选择用工业防尘口罩来替代医用口罩，这样的做法是否能有效抵御病毒侵袭呢？\r\n\r\n答案是肯定的，国家专家对于能否做到病毒防护的口罩有个说法，就是非油性颗粒物的过滤性。对于非油性颗粒物过滤性大于等于95%的口罩是可以防病毒的，也就是我们常说的N95或者KN9口罩，而3M工业防尘口罩之所以争议这么大，是因为之前雾霾时，这款口罩是主打防雾霾卖点作为宣传的，久而久之，在人们心里打下工业防尘口罩的印象。', 13140, 1, '2019-12-02 13:21:31', 1);
+INSERT INTO `news` VALUES (4, '正确戴口罩的方式，你还在浪费口罩吗', NULL, '我知道很多人口罩都快要用完了，还有些人没抢到N95，只剩一些一次性或普通外科口罩，心里很慌。所以，到底什么样的口罩能防病毒？\r\n\r\n中国医用口罩的防护能力由高至低依次是：医用防护口罩（标准高于KN95/N95口罩)、医用外科口罩、普通医用口罩。\r\n\r\n如果买不到KN95/N95，或者医用外科口罩，你只在人流不密集的公共场所，就用一次性使用医用口罩是完全可以的。如果你去医院或者超市这种人流比较大的高危场所，而且你要待很久，还要接触其他人，建议你佩戴医用外科口罩。\r\n\r\n现在疫情还很严峻，市场上口罩短缺，一些不法商家售卖一些不合格的口罩，大家购买的时候一定要注意观察外包装。\r\n\r\n医用外科口罩的行业标准为YY0469-2011，外包装需明确注明医用外科口罩。如果能买到，我们最推荐你日常防护佩戴医用外科口罩。\r\n\r\n实在不行，一次性使用医用口罩也可以。\r\n\r\n它的行业标准为YY/T0969-2013，市面上多数一次性、而且名称里没有“防护”、“外科”字样的口罩，均属于此类。\r\n\r\n这类口罩的标准要求具有合格的细菌过滤效率和通气阻力，但不要求对血液具有阻隔作用，对密闭性也没有要求[1]。\r\n\r\n所以在日常佩戴中，要注意佩戴方法，将口罩与脸部贴合并捏好鼻夹才可以更好的保护自己。', 13140, 0, '2019-12-01 13:23:06', 1);
+INSERT INTO `news` VALUES (5, '迫于小米10压力，一加7T Pro无奈跳水，售价探底！', NULL, '经过小米高管雷军和卢伟冰的大力炒作，小米10系列成功走上了高端价格之路，当然了，实力上能不能够达到高端标准，还得用户在使用体验中来检验，因为高端机不只是在价格上高端就真正的高端了。华为实现了高端之路可是经过了多年的实力品质检验的。\r\n\r\n但是根据小米10系列的首轮销量来看，还是证明了小米10系列获得了初步的成功了。同时受到小米10系列带来的冲击，国产友商品牌有很多都将自己的旗舰下调了价格，就比如说荣耀V30系列，还有一加7T Pro！\r\n\r\n今天我们来谈一下一加7T Pro吧，这是一款非常优秀的4G旗舰，在4G时代看起来它是非常完美的，但是唯一的缺点也是不支持5G，不过对于5G网普及比较慢的城市用户来说，买一加7T Pro是很划算的事情。因为现在一加7T Pro受到新机的冲击，已经变得很有性价比了。\r\n\r\n大家应该都了解，一加7T Pro只有一个存储组合的版本，那就是8+256G版本，这个版本最初的发布价是四千六左右，可以说还是比较昂贵的，但是现在它的价格已经降到了四千左右！跳水幅度是比较大！这样的价格入手一加7T Pro已经是够意思了。\r\n\r\n毕竟一加7T Pro配置了骁龙855 Plus处理器，在4G旗舰中，这个处理器是最好的，性能最强大。而且一加7T Pro还有4800超广角三摄，拍照优秀。电池是4085mAh，快充是全新升级的30W。\r\n\r\n屏幕是一加7T Pro最值得称道的地方，90Hz的屏幕刷新率，还有2K+超高清分辨率，当初一加7 Pro的屏幕就值得一个亿，而一加7T Pro是升级版，屏幕质量想必是更好了。所以这样看来一加7T Pro在任何一个方面都是不差的，现在降下这么高的价格，8+256G的确是很值得入手。', 23232323, 0, '2019-10-27 13:23:44', 1);
+INSERT INTO `news` VALUES (6, '即将发布的四款新机，华为P40延期发布？', 'timg (2).jpg', '非常时期，各大品牌采用新的发布方式，还是可以解理的。小米10、三星 S20基本确认了在网上直播发布，也是各大品牌首次这样发布，对于线下发布缺少真机体验。其次，对后期的销量也会造成一定的影响，比如买家收货，现在很多地区都限制了人流量。\r\n\r\niPhone 9系列在国外已经开始宣传，线下发布应该在国外，如果在国内发布只能选择线上发布。此外，三星 S20在国外也开始宣传，很可能在国外线下发布，国内在官方网中已经公布了网上直播发布。这场风雨直接影响了各大手机品牌的销量，其中三星的影响是最小的，三星近几年的手机基本都在国外，反而华为手机的销量影响极大。\r\n\r\niPhone 9或iPhone SE2搭载了A13仿生处理器，配置以3GB+64GB/128GB以上，预测价格在也很便宜。目前在国外宣传中，此款新机定为iPhone 9，在韩国已经开始预约了，而国内并没有开始宣传。', 67557, 0, '2019-09-29 13:24:30', 1);
+INSERT INTO `news` VALUES (7, '华为新机：麒麟1020+5500mAh石墨烯电池！', NULL, '目前华为面临的挑战是巨大的！\r\n\r\n在遭到了海外市场的重挫之后，谷歌继续限制华为手机对谷歌服务的使用权，虽然华为也已经找到了应对方法，发布了自家的HMS，但是效果如何还不确定。华为Mate 30系列因为谷歌限制，直到最近几天才能在欧洲上市，相对于国内来说晚了太久。\r\n\r\n而现在华为已经将高端机的方向转移到了国内市场，但是不好的是，现在小米已经决定冲击高端市场，从小米10系列开始，小米会有更多高端机面世，这对于在高端国内市场上一家独大的华为来说是一个不小的打击。\r\n\r\n如今小米10系列打响了第一枪，华为P40系列即将赶来应对，小米10系列势必会和华为P40系列有一场恶战。但是我们要相信华为，一直以来华为都有强硬的实力应对国产竞争对手。华为在2020年的重头戏不是华为P40系列，而是华为Mate 40系列，因为华为Mate 40系列才是华为集中一年力量的大成之作。\r\n\r\n最近华为Mate 40系列的渲染图遭到曝光，华为Mate 40系列的主要配置也遭到曝光。根据渲染图显示，华为Mate 40系列采用了双挖孔设计，在主屏前面有两颗小巧的挖孔，背面是6000万像素徕卡五摄，在左上角排列。\r\n\r\n毫无疑问的是，华为Mate 40系列将会搭载麒麟下一代处理器麒麟1020，这是每年一更的华为处理器，当然会在华为Mate 40系列上首发搭载。不可思议的还有华为Mate 40系列的电池，因为华为已经明确表示过，石墨烯电池已经被攻克了。\r\n\r\n所以华为Mate 40系列将会出现5500mAh的石墨烯电池，而且快充也是55W甚至是以上，可以说这次华为Mate 40系列真的是太强大了，在它面前，根本没有小米的什么事。自研技术一直是华为的强项，核心专利也是华为和国产对手根本的区别，小米并没有任何拿得出手的核心技术，所以和华为的高端竞争还不具备过硬资格！', 23232323, 0, '2019-09-02 21:06:57', 1);
+INSERT INTO `news` VALUES (8, '骁龙865太强势：16G+512G+5000mAh！', NULL, '最近三星S20系列的发布引发了广大关注，本来三星在中国的热度已经没有了，但是因为这次的三星旗舰实在是太强大，所以人们又忍不住去关注三星了。\r\n\r\n这次的三星5G旗舰，配置上的确是太出乎意料了，以致于在发布之后引起了比较大的反响。具体如何强大，我们且来看一看。\r\n\r\n首先三款新机中，配置最强的当然是三星S20 Ultra！这款手机应该是2020年初发布的5G机型最强配置，因为到现在为止，手机界吵得比较厉害的新配置都被三星S20 Ultra首发了，所以不要说什么小米10了，因为小米高管们经常念叨的各种配置，比如LPDDR5、UFS 3.0、亿级像素、8K相机等都有了，而且首发时间比小米10早！\r\n\r\n而且这次三星S20 Ultra还有小米10没有的120Hz刷新率、5000mAh电池等，可以说按照目前的态势，三星S20 Ultra的配置完全可以碾压小米10等即将发布的5G新机。也正是因为如此，所以三星S20 Ultra就变得傲娇起来，顶配版的三星S20 Ultra卖价实在是高得离谱！\r\n\r\n去年iPhone 11 Pro Max的顶配版是卖1.29W，而今年三星S20 Ultra的16G+512G顶配版卖到了1.19W！这样的价格和苹果高端机都不相上下了，但是大家应该都是了解的，不管三星S20 Ultra再怎么强大，在系统和处理器两个方面它是万万赶不上iPhone 11 Pro Max的！\r\n\r\n那么凭什么三星S20 Ultra能卖这么贵的价格呢？就凭LPDDR5、UFS 3.0、亿级像素、8K相机这些东西吗？可以说这些东西在iPhone 11 Pro Max面前是一文不值的，一个手机最重要的还是系统和处理器，不要耍一些花边配置，看似被吹上天，实则没什么卵用！', 23232323, 0, '2019-09-02 21:06:57', 1);
+INSERT INTO `news` VALUES (9, '苹果新A12X新机首曝光：售价千元！', NULL, '据外媒报道称，苹果即将发布一款搭载了A12X处理器的新机，而它就是全新的Apple TV。\r\n\r\n昨天，苹果开始新一轮软件测试，推送了iOS 13.4、iPadOS 13.4、macOS 10.15.4、watchOS 6.2以及tvOS 13.4。有开发者在tvOS 13.4中找到了代号为T1125的全新Apple TV硬件。\r\n\r\n目前的Apple TV 4K代号为J105a，普通Apple TV HD代号为J42d。出现在tvOS 13.4中的新型号因为是T开头，所以这是一款内部测试机器。', 2323, 0, '2019-09-02 21:06:57', 0);
+INSERT INTO `news` VALUES (10, '红米K30 Pro基本确认，骁龙865+良心售价', NULL, '随着科技的发展，基本上我们每个人手中都会有一部智能手机，它不仅能够用来通话而且还方便了我们的生活。目前国产手机品牌已经纷纷崛起，越来越多的消费者也喜欢选择国产手机，要说到极具性价比的品牌应该就是小米，其凭借着不错的性能和性价比在手机市场中也取得了不错的成绩，而如今独立红米品牌后更是推出了多款性价比手机，相信大家最期待应该就是红米K30 Pro。\r\n\r\n在前不久红米也发布了自家的红米K30手机，在发布之后很多消费者也表示欢迎，不过很多人期待的依旧是红米K30 Pro，据悉红米K30 Pro将是红米品牌的最强旗舰，其无论是外观还是配置在综合方面都比较均匀。在主要配置上，红米K30 Pro将搭载骁龙865处理器，这也是很多旗舰手机所采用的配置，配备6GB+128GB存储组合，应对日常使用和大型游戏基本上没有问题。\r\n\r\n值得一提的是，红米K30 Pro将会采用外挂骁龙X55基带的方式，实现对全网通5G网络的支持，这样一来红米K30 Pro拥有强悍性能的同时在5G方面也有很大的优势，很多朋友也比较担心它的功耗问题，由此红米K30 Pro内置4500mAh容量电池，并且支持33W快速充电，中度使用一天也基本没有问题，满足对长续航使用的需求。\r\n\r\n在外观设计方面，红米K30 Pro的外观和红米K30几乎没有区别，它的正面采用的是一块6.47英寸的挖孔全面屏，由于四周边框的缩窄，整体屏占比表现也颇为可观。在拍照方面，它后置6400万+1200万+800万+500万像素的AI四摄，它的6400万主摄可一点也不虚，无论是白天拍摄还是晚上拍摄都有非常出色的表现，足够满足大部分用户的使用需求。\r\n\r\n总而言之，红米K30 Pro无论是外观、颜值和性能都属于业内的主流水平，这也符合了红米产品一直以来的定位，红米K30 Pro在手机市场的竞争力还是比较大的。', 2323, 0, '2019-09-02 21:06:57', 0);
+
+-- ----------------------------
+-- Table structure for orders
+-- ----------------------------
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `number` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单号',
+  `buyer_id` int(11) NOT NULL COMMENT '所属买家会员编号',
+  `total_amount` int(255) NULL DEFAULT NULL COMMENT '商品总数量',
+  `total_price` decimal(10, 0) NULL DEFAULT NULL COMMENT '商品总费用',
+  `payment_price` decimal(10, 0) NULL DEFAULT NULL COMMENT '实付的总费用',
+  `remark` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '买家留言',
+  `address_id` int(11) NOT NULL COMMENT '地址id',
+  `create_time` date NULL DEFAULT NULL COMMENT '创建时间',
+  `payment_time` date NULL DEFAULT NULL COMMENT '支付时间',
+  `status` int(10) NULL DEFAULT NULL COMMENT '订单状态',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of orders
+-- ----------------------------
+INSERT INTO `orders` VALUES (1, '1', 1, 1, 499, 499, NULL, 2, NULL, NULL, NULL);
+INSERT INTO `orders` VALUES (2, '2', 2, 5, 400, 188, NULL, 3, NULL, NULL, NULL);
+INSERT INTO `orders` VALUES (3, '5', 2, 4, 177, 250, NULL, 3, NULL, NULL, NULL);
+INSERT INTO `orders` VALUES (5, '202003190417373671', 1, 36, 0, 450, '', 14, NULL, NULL, 1);
+INSERT INTO `orders` VALUES (6, '202003190418010791', 1, 39, 0, 510, '', 2, NULL, NULL, 1);
+INSERT INTO `orders` VALUES (7, '202003200435196481', 1, 43, 0, 510, '', 14, NULL, NULL, 1);
+INSERT INTO `orders` VALUES (8, '202004220340378821', 1, 52, 0, 800, '', 14, NULL, NULL, 1);
+INSERT INTO `orders` VALUES (9, '202004251138513461', 1, 53, 4999, 800, '', 14, NULL, NULL, 1);
+
+-- ----------------------------
+-- Table structure for product
+-- ----------------------------
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE `product`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品名字',
+  `thumbnail` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '主配图片',
+  `inventory` int(11) NULL DEFAULT 0 COMMENT '库存',
+  `sales_volume` int(11) NULL DEFAULT 0 COMMENT '销售量',
+  `price` decimal(9, 2) NULL DEFAULT 0.00 COMMENT '价格',
+  `sale_price` decimal(9, 2) NULL DEFAULT 0.00 COMMENT '售价',
+  `detail_description` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '详情富文本描述',
+  `selling_description` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '卖点富文本描述 ',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '添加时间',
+  `sale_time` datetime NULL DEFAULT NULL COMMENT '开售时间',
+  `cate_id` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of product
+-- ----------------------------
+INSERT INTO `product` VALUES (1, 'huawei', 'product1.jpg', 2321, 999, 10.00, 50.00, '', '', '2019-12-03 10:36:40', '2019-12-06 10:36:42', 2);
+INSERT INTO `product` VALUES (2, 'huawei', '261caf6a4088dcd681c798fdf1a752995bcd19c51c94b-l2ECBv_fw658.jfif', 0, 999, 0.00, 20.00, '', '', NULL, NULL, 2);
+INSERT INTO `product` VALUES (3, 'huawei', 'product1.jpg', 0, 99, 0.00, 340.00, NULL, NULL, NULL, NULL, 2);
+INSERT INTO `product` VALUES (4, 'huawei', 'product1.jpg', 0, 99, 0.00, 0.00, NULL, NULL, NULL, NULL, 2);
+INSERT INTO `product` VALUES (5, 'huawei', 'product1.jpg', 0, 99, 0.00, 0.00, NULL, NULL, NULL, NULL, 2);
+INSERT INTO `product` VALUES (6, 'huawei', 'product1.jpg', 0, 99, 0.00, 0.00, '', '', NULL, NULL, 0);
+INSERT INTO `product` VALUES (7, 'GalaxyNote10+', 'product2.jpg', 0, 99, 0.00, 0.00, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `product` VALUES (8, 'Apple iPhone 11 Pro Max ', 'product2.jpg', 0, 999999, 4999.00, 0.00, NULL, NULL, NULL, NULL, 3);
+INSERT INTO `product` VALUES (9, 'Apple iPhone 11 Pro Max ', 'product2.jpg', 2323, 9999, 7999.00, 13213.00, NULL, '', NULL, NULL, 3);
+INSERT INTO `product` VALUES (11, 'Apple iPhone 11 Pro Max ', 'product2.jpg', 2323, 9999, 7999.00, 13213.00, NULL, '', '2019-12-02 11:10:13', '2019-12-05 11:10:16', 3);
+INSERT INTO `product` VALUES (12, 'Apple iPhone 11 Pro Max ', 'product2.jpg', 0, 9999, 9999.00, 9999.00, NULL, '', '2019-12-02 11:20:22', '2019-12-07 11:20:25', 3);
+INSERT INTO `product` VALUES (13, 'Apple iPhone 11 Pro Max ', 'product2.jpg', 1, 9999, 9999.00, 9999.00, NULL, '', NULL, NULL, 3);
+INSERT INTO `product` VALUES (14, 'Apple iPhone 11 Pro Max ', 'product2.jpg', 0, 9999, 0.00, 0.00, NULL, '', NULL, NULL, 3);
+INSERT INTO `product` VALUES (15, 'Apple iPhone 11 Pro Max ', 'product2.jpg', 0, 99999, 0.00, 0.00, '', '', NULL, NULL, 3);
+INSERT INTO `product` VALUES (16, 'Apple iPhone 11 Pro Max ', 'product2.jpg', 0, 99999, 0.00, 50.00, 'rwerwerwerwerwer', 'rewrwrwerew', '2019-12-03 19:42:56', '2019-12-27 19:42:54', 3);
+INSERT INTO `product` VALUES (17, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+INSERT INTO `product` VALUES (18, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+INSERT INTO `product` VALUES (19, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+INSERT INTO `product` VALUES (20, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+INSERT INTO `product` VALUES (21, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+INSERT INTO `product` VALUES (22, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+INSERT INTO `product` VALUES (23, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+INSERT INTO `product` VALUES (24, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+INSERT INTO `product` VALUES (25, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+INSERT INTO `product` VALUES (26, '联想(Lenovo)小新Pro', 'product3.jpg', 0, 0, 0.00, 0.00, NULL, NULL, NULL, NULL, 11);
+
+-- ----------------------------
+-- Table structure for product1
+-- ----------------------------
+DROP TABLE IF EXISTS `product1`;
+CREATE TABLE `product1`  (
+  `id` int(4) NOT NULL AUTO_INCREMENT,
+  `pname` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `price` int(10) NULL DEFAULT NULL,
+  `flag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `sale_time` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'id' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of product1
+-- ----------------------------
+INSERT INTO `product1` VALUES (1, '联想', 5000, '1', NULL);
+INSERT INTO `product1` VALUES (2, '海尔', 3000, '1', NULL);
+INSERT INTO `product1` VALUES (4, 'JACK_JONES', 800, '1', NULL);
+INSERT INTO `product1` VALUES (5, '真维斯', 200, '1', NULL);
+INSERT INTO `product1` VALUES (6, '花花公子', 450, '1', NULL);
+INSERT INTO `product1` VALUES (7, '劲霸', 700, '1', NULL);
+INSERT INTO `product1` VALUES (8, '相宜本草', 2680, '1', NULL);
+INSERT INTO `product1` VALUES (12, '三星GalaxyNote10+', 8999, '1', '');
+INSERT INTO `product1` VALUES (13, ' vivo NEX 3 5G', 3999, '手机', '');
+
+-- ----------------------------
+-- Table structure for shopcar
+-- ----------------------------
+DROP TABLE IF EXISTS `shopcar`;
+CREATE TABLE `shopcar`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '购物车id',
+  `member_id` int(11) NULL DEFAULT NULL COMMENT '所属会员id',
+  `product_id` int(11) NULL DEFAULT NULL COMMENT '商品id',
+  `amount` int(40) NULL DEFAULT NULL COMMENT '商品数量',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of shopcar
+-- ----------------------------
+INSERT INTO `shopcar` VALUES (2, 2, 1, 50);
+INSERT INTO `shopcar` VALUES (6, 1, 15, 36);
+INSERT INTO `shopcar` VALUES (7, 1, 16, 16);
+INSERT INTO `shopcar` VALUES (10, 25, 15, 6);
+INSERT INTO `shopcar` VALUES (11, 1, 8, 1);
+
+SET FOREIGN_KEY_CHECKS = 1;
