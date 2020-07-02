@@ -17,7 +17,7 @@
 	<!-- 项目属性:项目编辑时编辑方式,使用UTF-8 -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mysql.version>5.1.48</mysql.version>
+		<mysql.version>8.0.16</mysql.version>
 		<dbutil.version>1.6</dbutil.version>
 		<spring.version>5.2.1.RELEASE</spring.version>
 		<aop.version>1.0</aop.version>
